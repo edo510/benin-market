@@ -95,7 +95,8 @@ function list(){const g=$("#grid");if(!g)return;
  g.innerHTML=r.length?r.map(card).join(""):`<p class="empty">${ADS.length?"Aucune annonce trouvée. Essayez un autre mot, une autre ville ou une autre catégorie.":"Aucune annonce pour l’instant. Soyez le premier à publier !"}</p>`}
 function loginForm(m,msg){
  m.innerHTML=`<div class="panel"><h2>${msg}</h2><div class="chips"><button class="chip ${mode==="in"?"on":""}" onclick="mode='in';render()">Connexion</button><button class="chip ${mode==="up"?"on":""}" onclick="mode='up';render()">Inscription</button></div><div class="chips" style="padding-top:0"><button class="chip ${how==="tel"?"on":""}" onclick="how='tel';render()">Téléphone</button><button class="chip ${how==="mail"?"on":""}" onclick="how='mail';render()">Email</button></div>${mode==="up"?`<label>Votre nom<input id="nm" autocomplete="name"></label>`:""}<label>${how==="tel"?"Numéro de téléphone":"Adresse email"}<input id="ct" ${how==="tel"?'type="tel" inputmode="tel" placeholder="01 97 00 00 00"':'type="email" placeholder="nom@mail.com"'} autocomplete="username"></label><label>Mot de passe${mode==="up"?" (6 caractères minimum)":""}<input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}"></label><button class="btn" id="go" onclick="submitAuth()">${mode==="up"?"Créer mon compte":"Se connecter"}</button></div>`}
-function authError(e)return"Erreur : "+e.message+" ["+(e.code||e.status)+"]";
+function authError(e){const m=(e.message||"").toLowerCase();return"Erreur : "+e.message+" ["+(e.code||e.status)+"]";
+(e)return"Erreur : "+e.message+" ["+(e.code||e.status)+"]";
 {const m=(e.message||"").toLowerCase();
  if(m.includes("invalid login"))return"Identifiant ou mot de passe incorrect.";
  if(m.includes("already")||m.includes("registered"))return"Ce compte existe déjà. Connectez-vous.";
