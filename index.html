@@ -57,6 +57,8 @@ nav button.on{color:var(--gr);font-weight:700}
 #pv{width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:8px}
 #toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:20;font-size:15px}
 @media (prefers-reduced-motion:no-preference){.sh{animation:up .2s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.6}}}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.th{position:relative}.th img{width:84px;height:84px;object-fit:cover;border-radius:10px;display:block}.x2{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:0;background:var(--tx);color:var(--bg);cursor:pointer;font-size:12px}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px 12px}.gal img{flex:none;width:100%;aspect-ratio:4/3;object-fit:cover;scroll-snap-align:center;border-radius:18px 18px 0 0}
 </style></head>
 <body>
 <header><span class="bar"></span><span class="logo">Bénin <i>Market</i></span></header>
@@ -95,11 +97,13 @@ const PRIV=`<div class="panel"><h2>Politique de confidentialité</h2><p class="m
 <p><b>Conservation et suppression.</b> Vos données sont conservées tant que votre compte existe. Le bouton « Supprimer mon compte » de votre profil efface votre compte, votre profil et vos annonces. Vous pouvez aussi nous écrire pour toute demande d’accès, de correction ou de suppression.</p>
 <p><b>Contact.</b> ${CONTACT}</p>
 <button class="btn ghost" onclick="go('home')">Retour</button></div>`;
-let ME=null,BLOCKED=[],ADS=[],loading=true,view="home",q="",cat="Tout",sel=null,sid=null,mode="in",how="tel",pblob=null,busy=false;
+let ME=null,BLOCKED=[],ADS=[],loading=true,view="home",q="",cat="Tout",sel=null,sid=null,mode="in",how="tel",pblobs=[],busy=false;
+const SEEN=new Set();
+const vu=n=>n+" vue"+(n>1?"s":"");
 function toast(m){const o=$("#toast");if(o)o.remove();const t=document.createElement("div");t.id="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3200)}
 function go(v){view=v;sel=null;sheet();render();scrollTo(0,0)}
 function thumb(a){return a.image_url?`<img src="${esc(a.image_url)}" alt="${esc(a.title)}" loading="lazy">`:`<div class="ph">${esc((a.category||"?")[0])}</div>`}
-function card(a){return`<button class="card" onclick="openAd('${esc(a.id)}')">${thumb(a)}<div class="ci"><b>${fmt(a.price)}</b><span>${esc(a.title)}</span><small>${esc(a.city)}</small></div></button>`}
+function card(a){return`<button class="card" onclick="openAd('${esc(a.id)}')">${thumb(a)}<div class="ci"><b>${fmt(a.price)}</b><span>${esc(a.title)}</span><small>${esc(a.city)}, ${vu(a.views||0)}</small></div></button>`}
 async function loadAds(){loading=true;list();
  const {data,error}=await sb.from("ads").select("*, profiles(name,phone,email)").order("created_at",{ascending:false}).limit(300);
  loading=false;
@@ -113,6 +117,7 @@ function renderView(){
  else if(view==="pub"){ME?pubForm(m):loginForm(m,"Connectez-vous pour publier")}
  else if(view==="me"){ME?profile(m,ME.id,true):loginForm(m,"Connexion ou inscription")}
  else if(view==="seller"){profile(m,sid,false)}
+ else if(view==="newpw"){newPwForm(m)}
  else if(view==="cgu"){m.innerHTML=CGU}
  else if(view==="privacy"){m.innerHTML=PRIV}}
 function list(){const g=$("#grid");if(!g)return;
@@ -121,7 +126,7 @@ function list(){const g=$("#grid");if(!g)return;
  const r=ADS.filter(a=>!BLOCKED.includes(a.seller_id)&&(cat==="Tout"||a.category===cat)&&(!t||norm(a.title+" "+a.description+" "+a.city+" "+a.region).includes(t)));
  g.innerHTML=r.length?r.map(card).join(""):`<p class="empty">${ADS.length?"Aucune annonce trouvée. Essayez un autre mot, une autre ville ou une autre catégorie.":"Aucune annonce pour l’instant. Soyez le premier à publier !"}</p>`}
 function loginForm(m,msg){
- m.innerHTML=`<div class="panel"><h2>${msg}</h2><div class="chips"><button class="chip ${mode==="in"?"on":""}" onclick="mode='in';render()">Connexion</button><button class="chip ${mode==="up"?"on":""}" onclick="mode='up';render()">Inscription</button></div><div class="chips" style="padding-top:0"><button class="chip ${how==="tel"?"on":""}" onclick="how='tel';render()">Téléphone</button><button class="chip ${how==="mail"?"on":""}" onclick="how='mail';render()">Email</button></div>${mode==="up"?`<label>Votre nom<input id="nm" autocomplete="name"></label>`:""}<label>${how==="tel"?"Numéro de téléphone":"Adresse email"}<input id="ct" ${how==="tel"?'type="tel" inputmode="tel" placeholder="01 97 00 00 00"':'type="email" placeholder="nom@mail.com"'} autocomplete="username"></label><label>Mot de passe${mode==="up"?" (6 caractères minimum)":""}<input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}"></label><button class="btn" id="go" onclick="submitAuth()">${mode==="up"?"Créer mon compte":"Se connecter"}</button></div>`}
+ m.innerHTML=`<div class="panel"><h2>${msg}</h2><div class="chips"><button class="chip ${mode==="in"?"on":""}" onclick="mode='in';render()">Connexion</button><button class="chip ${mode==="up"?"on":""}" onclick="mode='up';render()">Inscription</button></div><div class="chips" style="padding-top:0"><button class="chip ${how==="tel"?"on":""}" onclick="how='tel';render()">Téléphone</button><button class="chip ${how==="mail"?"on":""}" onclick="how='mail';render()">Email</button></div>${mode==="up"?`<label>Votre nom<input id="nm" autocomplete="name"></label>`:""}<label>${how==="tel"?"Numéro de téléphone":"Adresse email"}<input id="ct" ${how==="tel"?'type="tel" inputmode="tel" placeholder="01 97 00 00 00"':'type="email" placeholder="nom@mail.com"'} autocomplete="username"></label><label>Mot de passe${mode==="up"?" (6 caractères minimum)":""}<input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}"></label><button class="btn" id="go" onclick="submitAuth()">${mode==="up"?"Créer mon compte":"Se connecter"}</button>${mode==="in"?`<p style="margin:12px 0 0"><button class="link" style="color:var(--mt)" onclick="forgot()">Mot de passe oublié ?</button></p>`:""}</div>`}
 function authError(e){return"Erreur : "+(e.message||e)+" ["+(e.code||e.status||"")+"]"}
 async function submitAuth(){
  if(busy)return;
@@ -139,22 +144,33 @@ async function submitAuth(){
   else{const {error}=await sb.auth.signInWithPassword({...cred,password:pw});if(error)throw error;toast("Connexion réussie")}
  }catch(e){toast(authError(e))}
  finally{busy=false;if($("#go"))$("#go").textContent=mode==="up"?"Créer mon compte":"Se connecter"}}
-function pubForm(m){pblob=null;
- m.innerHTML=`<div class="panel"><h2>Publier une annonce</h2><label>Titre<input id="t" maxlength="70"></label><label>Prix en FCFA<input id="p" type="number" inputmode="numeric" min="0"></label><label>Catégorie<select id="c">${CATS.map(c=>`<option>${c}</option>`).join("")}</select></label><label>Ville<select id="v">${LOC.map(l=>`<option value="${l[0]}">${l[0]} (${l[1]})</option>`).join("")}</select></label><label>Description<textarea id="d" rows="3"></textarea></label><label>Photo<input type="file" accept="image/*" onchange="pick(this)"></label><img id="pv" alt="Aperçu" hidden><button class="btn" id="pb" onclick="publish()">Publier l’annonce</button></div>`}
-function pick(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*k;c.height=i.height*k;c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(b=>{pblob=b;$("#pv").src=URL.createObjectURL(b);$("#pv").hidden=false},"image/jpeg",.78)};i.src=r.result};r.readAsDataURL(f)}
+function pubForm(m){pblobs=[];
+ m.innerHTML=`<div class="panel"><h2>Publier une annonce</h2><label>Titre<input id="t" maxlength="70"></label><label>Prix en FCFA<input id="p" type="number" inputmode="numeric" min="0"></label><label>Catégorie<select id="c">${CATS.map(c=>`<option>${c}</option>`).join("")}</select></label><label>Ville<select id="v">${LOC.map(l=>`<option value="${l[0]}">${l[0]} (${l[1]})</option>`).join("")}</select></label><label>Description<textarea id="d" rows="3"></textarea></label><label>Photos (5 maximum)<input type="file" accept="image/*" multiple onchange="pick(this)"></label><div id="pvs" class="thumbs"></div><button class="btn" id="pb" onclick="publish()">Publier l’annonce</button></div>`}
+function shrink(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),i=new Image();i.onload=()=>{const k=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*k;c.height=i.height*k;c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):no(new Error("photo illisible")),"image/jpeg",.78)};i.onerror=()=>no(new Error("photo illisible"));i.src=u})}
+async function pick(inp){const all=[...inp.files],fs=all.slice(0,5-pblobs.length);inp.value="";
+ if(fs.length<all.length)toast("5 photos maximum.");
+ for(const f of fs){try{pblobs.push(await shrink(f))}catch(e){toast("Photo illisible, essayez-en une autre.")}}
+ showThumbs()}
+function showThumbs(){$("#pvs").innerHTML=pblobs.map((b,i)=>`<span class="th"><img src="${URL.createObjectURL(b)}" alt="Photo ${i+1}"><button class="x2" onclick="rmPhoto(${i})" aria-label="Retirer la photo">✕</button></span>`).join("")}
+function rmPhoto(i){pblobs.splice(i,1);showThumbs()}
+function gallery(a){const im=(a.images&&a.images.length)?a.images:(a.image_url?[a.image_url]:[]);
+ if(!im.length)return thumb(a);
+ return`<div class="gal">${im.map((u,i)=>`<img src="${esc(u)}" alt="${esc(a.title)} ${i+1}">`).join("")}</div>${im.length>1?`<p class="mt" style="text-align:center;margin:-6px 0 8px;font-size:13px">${im.length} photos, faites glisser</p>`:""}`}
+function countView(id){const a=ADS.find(x=>x.id===id);if(!a||SEEN.has(id)||(ME&&ME.id===a.seller_id))return;SEEN.add(id);a.views=(a.views||0)+1;sb.rpc("increment_views",{ad_id:id}).then(()=>{},()=>{})}
 async function publish(){
  if(busy)return;
  const title=$("#t").value.trim(),price=+$("#p").value;
  if(!title||!(price>0))return toast("Ajoutez un titre et un prix.");
  busy=true;$("#pb").textContent="Publication…";
  try{
-  let image_url=null;
-  if(pblob){const path=ME.id+"/"+Date.now()+".jpg";
-   const up=await sb.storage.from("photos").upload(path,pblob,{contentType:"image/jpeg"});
+  const images=[];
+  for(const b of pblobs){const path=ME.id+"/"+Date.now()+"-"+images.length+".jpg";
+   const up=await sb.storage.from("photos").upload(path,b,{contentType:"image/jpeg"});
    if(up.error)throw up.error;
-   image_url=sb.storage.from("photos").getPublicUrl(path).data.publicUrl}
+   images.push(sb.storage.from("photos").getPublicUrl(path).data.publicUrl)}
+  const image_url=images[0]||null;
   const city=$("#v").value;
-  const {error}=await sb.from("ads").insert({title,price,category:$("#c").value,city,region:dep(city),description:$("#d").value.trim(),image_url});
+  const {error}=await sb.from("ads").insert({title,price,category:$("#c").value,city,region:dep(city),description:$("#d").value.trim(),image_url,images});
   if(error)throw error;
   q="";cat="Tout";view="home";await loadAds();go("home");toast("Annonce publiée")
  }catch(e){toast("Échec de la publication : "+e.message)}
@@ -163,10 +179,10 @@ function contactBtns(u,t){const p=digits(u.phone);
  if(p)return`<a class="btn" href="https://wa.me/${p}?text=${encodeURIComponent("Bonjour, votre annonce « "+t+" » est-elle toujours disponible ?")}" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost" href="tel:+${p}">Appeler</a>`;
  if(u.email)return`<a class="btn" href="mailto:${esc(u.email)}?subject=${encodeURIComponent(t)}">Écrire un email</a>`;
  return""}
-function openAd(id){sel=id;sheet()}
+function openAd(id){sel=id;countView(id);sheet()}
 function sheet(){const a=ADS.find(x=>x.id===sel);if(!a){$("#sheet").innerHTML="";return}
  const u=a.profiles||{name:"Vendeur"},nm=u.name||"Vendeur";
- $("#sheet").innerHTML=`<div class="ov" onclick="sel=null;sheet()"><div class="sh" onclick="event.stopPropagation()"><button class="x" onclick="sel=null;sheet()" aria-label="Fermer">✕</button>${thumb(a)}<h2>${esc(a.title)}</h2><p class="pr">${fmt(a.price)}</p><p class="mt">${esc(a.category)}, ${esc(a.city)} (${esc(a.region)})</p><p>${esc(a.description||"Pas de description.")}</p><button class="sel" onclick="openSeller('${esc(a.seller_id)}')"><span class="av">${esc(nm[0]||"?")}</span><span>${esc(nm)}<small>Voir le profil du vendeur</small></span></button><div class="row">${contactBtns(u,a.title)}</div><p id="rp" style="margin-top:16px"><button class="link" onclick="reportUI()">Signaler cette annonce</button> &nbsp; <button class="link" onclick="blockSeller('${esc(a.seller_id)}')">Bloquer ce vendeur</button></p></div></div>`}
+ $("#sheet").innerHTML=`<div class="ov" onclick="sel=null;sheet()"><div class="sh" onclick="event.stopPropagation()"><button class="x" onclick="sel=null;sheet()" aria-label="Fermer">✕</button>${gallery(a)}<h2>${esc(a.title)}</h2><p class="pr">${fmt(a.price)}</p><p class="mt">${esc(a.category)}, ${esc(a.city)} (${esc(a.region)}), ${vu(a.views||0)}</p><p>${esc(a.description||"Pas de description.")}</p><button class="sel" onclick="openSeller('${esc(a.seller_id)}')"><span class="av">${esc(nm[0]||"?")}</span><span>${esc(nm)}<small>Voir le profil du vendeur</small></span></button><div class="row">${contactBtns(u,a.title)}</div><p id="rp" style="margin-top:16px"><button class="link" onclick="reportUI()">Signaler cette annonce</button> &nbsp; <button class="link" onclick="blockSeller('${esc(a.seller_id)}')">Bloquer ce vendeur</button></p></div></div>`}
 function reportUI(){if(!ME){toast("Connectez-vous pour signaler une annonce.");return}
  $("#rp").innerHTML=`<span class="mt">Motif du signalement :</span><span class="row" style="flex-wrap:wrap;margin-top:6px">${["Arnaque","Article interdit","Déjà vendu","Autre"].map(r=>`<button class="chip" onclick="sendReport('${r}')">${r}</button>`).join("")}</span>`}
 async function sendReport(r){const {error}=await sb.from("reports").insert({ad_id:sel,reason:r});
@@ -176,7 +192,7 @@ function profile(m,id,own){
  const ads=ADS.filter(a=>a.seller_id===id);
  const u=own?{name:(ME.user_metadata&&ME.user_metadata.name)||"Mon compte",phone:ME.phone,email:ME.email}:((ads[0]&&ads[0].profiles)||{name:"Vendeur"});
  const nm=u.name||"Vendeur";
- m.innerHTML=`<div class="panel"><div class="row" style="align-items:center"><span class="av">${esc(nm[0]||"?")}</span><div><h2>${esc(nm)}</h2><span class="badge">${u.phone?"Inscrit par téléphone":"Inscrit par email"}</span></div></div><p class="mt">${ads.length} annonce${ads.length>1?"s":""} en ligne</p>${own?`<button class="btn red" onclick="logout()">Se déconnecter</button>${BLOCKED.length?`<button class="btn ghost" onclick="unblockAll()">Débloquer les vendeurs (${BLOCKED.length})</button>`:""}<div id="dz" style="margin-top:16px"><button class="link" onclick="askDelete()">Supprimer mon compte</button></div>`:`<div class="row">${contactBtns(u,"vos annonces")}</div><div style="margin-top:12px">${BLOCKED.includes(id)?`<button class="link" onclick="unblock('${esc(id)}')">Débloquer ce vendeur</button>`:`<button class="link" onclick="blockSeller('${esc(id)}')">Bloquer ce vendeur</button>`}</div>`}</div>
+ m.innerHTML=`<div class="panel"><div class="row" style="align-items:center"><span class="av">${esc(nm[0]||"?")}</span><div><h2>${esc(nm)}</h2><span class="badge">${u.phone?"Inscrit par téléphone":"Inscrit par email"}</span></div></div><p class="mt">${ads.length} annonce${ads.length>1?"s":""} en ligne</p>${own?`<button class="btn ghost" onclick="go('newpw')">Changer mon mot de passe</button><button class="btn red" onclick="logout()">Se déconnecter</button>${BLOCKED.length?`<button class="btn ghost" onclick="unblockAll()">Débloquer les vendeurs (${BLOCKED.length})</button>`:""}<div id="dz" style="margin-top:16px"><button class="link" onclick="askDelete()">Supprimer mon compte</button></div>`:`<div class="row">${contactBtns(u,"vos annonces")}</div><div style="margin-top:12px">${BLOCKED.includes(id)?`<button class="link" onclick="unblock('${esc(id)}')">Débloquer ce vendeur</button>`:`<button class="link" onclick="blockSeller('${esc(id)}')">Bloquer ce vendeur</button>`}</div>`}</div>
  <h2 style="margin:18px 0 8px">${own?"Mes annonces":"Ses annonces"}</h2>${ads.length?ads.map(a=>own?`<div class="mine">${card(a).replace('class="card"','class="card" style="display:flex"')}<button class="link" onclick="delAd('${esc(a.id)}')">Supprimer</button></div>`:card(a)).join(""):`<p class="empty">Aucune annonce pour l’instant.</p>`}`;
  if(!own)m.querySelectorAll(".card").forEach(c=>c.style.marginTop="10px")}
 async function delAd(id){const {error}=await sb.from("ads").delete().eq("id",id);if(error)return toast("Suppression impossible : "+error.message);await loadAds();render();toast("Annonce supprimée")}
@@ -193,7 +209,20 @@ async function unblock(id){const {error}=await sb.from("blocks").delete().eq("bl
 async function unblockAll(){const {error}=await sb.from("blocks").delete().neq("blocked_id","00000000-0000-0000-0000-000000000000");if(error)return toast("Échec : "+error.message);BLOCKED=[];render();toast("Vendeurs débloqués")}
 function askDelete(){$("#dz").innerHTML=`<p class="mt">Cette action est définitive : votre compte, votre profil et vos annonces seront supprimés.</p><button class="btn red" onclick="doDelete()">Oui, supprimer définitivement</button>`}
 async function doDelete(){const {error}=await sb.rpc("delete_my_account");if(error)return toast("Suppression impossible : "+error.message);try{await sb.auth.signOut()}catch(e){}ME=null;BLOCKED=[];await loadAds();go("home");toast("Compte supprimé")}
-sb.auth.onAuthStateChange((e,s)=>{ME=s?s.user:null;if(ME)setTimeout(loadBlocks,0);else BLOCKED=[];if(view==="me"||view==="pub")render()});
+function forgot(){$("#main").innerHTML=`<div class="panel"><h2>Mot de passe oublié</h2><p class="mt">Entrez l’email de votre compte : nous vous envoyons un lien pour choisir un nouveau mot de passe. Si vous vous êtes inscrit avec un numéro de téléphone, écrivez-nous à ${CONTACT}.</p><label>Adresse email<input id="fe" type="email" autocomplete="username"></label><button class="btn" id="fb" onclick="sendReset()">Envoyer le lien</button><button class="btn ghost" onclick="render()">Retour</button></div>`}
+async function sendReset(){const em=$("#fe").value.trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(em))return toast("Adresse email invalide.");
+ $("#fb").textContent="Envoi…";
+ const {error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname});
+ $("#fb").textContent="Envoyer le lien";
+ if(error)return toast(authError(error));
+ toast("Si ce compte existe, un email vient d’être envoyé.")}
+function newPwForm(m){m.innerHTML=`<div class="panel"><h2>Nouveau mot de passe</h2><label>Nouveau mot de passe (6 caractères minimum)<input id="np" type="password" autocomplete="new-password"></label><button class="btn" id="nb" onclick="savePw()">Enregistrer</button><button class="btn ghost" onclick="go('home')">Annuler</button></div>`}
+async function savePw(){const p=$("#np").value;if(p.length<6)return toast("Le mot de passe doit avoir au moins 6 caractères.");
+ $("#nb").textContent="Patientez…";
+ const {error}=await sb.auth.updateUser({password:p});
+ if(error){$("#nb").textContent="Enregistrer";const c=error.code||"";return toast(c==="same_password"?"Choisissez un mot de passe différent de l’ancien.":c==="reauthentication_needed"?"Pour votre sécurité, déconnectez-vous, reconnectez-vous, puis réessayez.":c==="weak_password"?"Mot de passe trop faible. Ajoutez des lettres et des chiffres.":authError(error))}
+ toast("Mot de passe modifié");go("me")}
+sb.auth.onAuthStateChange((e,s)=>{ME=s?s.user:null;if(ME)setTimeout(loadBlocks,0);else BLOCKED=[];if(e==="PASSWORD_RECOVERY"){view="newpw";render();return}if(view==="me"||view==="pub")render()});
 (async()=>{const {data}=await sb.auth.getSession();ME=data.session?data.session.user:null;render();loadAds()})();
 window.addEventListener("error",e=>toast("Erreur : "+e.message));
 window.addEventListener("unhandledrejection",e=>toast("Erreur : "+((e.reason&&e.reason.message)||e.reason)));
