@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#087443">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bénin Market">
+<title>Bénin Market — Achetez et vendez au Bénin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#f5f7f3;--surface:#fff;--text:#17251c;--muted:#66746a;--green:#087443;--green-dark:#075b35;--green-soft:#e6f3ea;--yellow:#f4c542;--red:#c93832;--border:#e0e7e0;--shadow:0 10px 30px rgba(19,54,31,.07);--radius:20px}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#101713;--surface:#19231c;--text:#edf5ee;--muted:#a3b1a6;--green:#55c58a;--green-dark:#2d9e64;--green-soft:#20392a;--yellow:#f4c542;--red:#ff8178;--border:#2c3b30;--shadow:0 10px 30px rgba(0,0,0,.22)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#101713;--surface:#19231c;--text:#edf5ee;--muted:#a3b1a6;--green:#55c58a;--green-dark:#2d9e64;--green-soft:#20392a;--border:#2c3b30;--shadow:0 10px 30px rgba(0,0,0,.22)}}
+*{box-sizing:border-box}
+html{scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.5 "DM Sans",system-ui,sans-serif;padding-bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+button,input,select,textarea{font:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.topbar{position:sticky;top:0;z-index:8;background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;min-width:0}
+.brand-mark{width:38px;height:38px;flex:none;border-radius:13px;background:linear-gradient(135deg,#087443 0 58%,#f4c542 58% 78%,#c93832 78%);display:grid;place-items:center;color:white;font-weight:800;font-size:17px;box-shadow:0 5px 14px #08744330}
+.brand-name{font:800 22px/1 "Bricolage Grotesque",sans-serif;letter-spacing:-.7px;white-space:nowrap}
+.brand-name span{color:var(--green)}
+.header-actions{display:flex;gap:8px}
+.icon-btn{width:40px;height:40px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:13px;display:grid;place-items:center;font-size:18px}
+main{max-width:1040px;margin:0 auto;padding:18px 16px 30px}
+.hero{position:relative;overflow:hidden;border-radius:26px;padding:25px 21px 22px;background:linear-gradient(135deg,#075d35,#0c8750);color:#fff;box-shadow:0 15px 32px #08744325}
+.hero:after{content:"";position:absolute;width:210px;height:210px;border:35px solid #ffffff10;border-radius:50%;right:-78px;top:-75px;pointer-events:none}
+.hero-kicker{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:1.2px;color:#ffe18a;margin-bottom:13px}
+.hero h1{position:relative;z-index:1;font:800 clamp(30px,7vw,43px)/1.06 "Bricolage Grotesque",sans-serif;letter-spacing:-1.2px;margin:0;max-width:550px}
+.hero p{position:relative;z-index:1;color:#e1f3e7;font-size:14px;margin:13px 0 19px;max-width:420px}
+.search-wrap{position:relative;z-index:1}
+.search-wrap input{width:100%;padding:15px 16px 15px 45px;border:0;border-radius:15px;background:#fff;color:#17251c;box-shadow:0 6px 18px #002c1822}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:18px;color:#607568}
+.hero-foot{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;font-size:12px;color:#e4f4e8;font-weight:600}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:25px 0 9px}
+h2{font:800 24px/1.15 "Bricolage Grotesque",sans-serif;letter-spacing:-.5px;margin:0}
+h3{font:700 18px/1.25 "Bricolage Grotesque",sans-serif;margin:0 0 6px}
+.muted,.mt,small{color:var(--muted)}
+.section-sub{margin:5px 0 0;color:var(--muted);font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 17px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:13px;padding:9px 14px;font-size:13px;font-weight:700;white-space:nowrap}
+.chip.on{background:var(--green);color:#fff;border-color:var(--green);box-shadow:0 5px 14px #08744324}
+:root[data-theme="dark"] .chip.on{color:#06170d}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{position:relative;display:block;width:100%;min-width:0;text-align:left;padding:0;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--surface);color:var(--text);box-shadow:0 4px 16px #193b2408;transition:transform .16s,box-shadow .16s}
+.card:active{transform:scale(.985)}
+.card-media{width:100%;aspect-ratio:1/1;display:block;object-fit:cover;background:var(--green-soft)}
+.ph{width:100%;aspect-ratio:1/1;display:grid;place-items:center;background:linear-gradient(135deg,var(--green-soft),var(--surface));color:var(--green);font:800 52px "Bricolage Grotesque",sans-serif}
+.card-body{padding:11px 11px 13px}
+.price{font:800 17px/1.2 "Bricolage Grotesque",sans-serif;color:var(--green);letter-spacing:-.2px}
+.card-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:700;font-size:13px;line-height:1.35;margin-top:6px;min-height:35px}
+.card-meta{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;margin-top:8px;overflow:hidden}
+.card-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sold{position:absolute;top:9px;left:9px;background:var(--red);color:#fff;font-size:11px;font-weight:800;padding:4px 9px;border-radius:99px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:32px 18px;border:1px dashed var(--border);border-radius:18px;background:var(--surface)}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:20px;margin-top:8px;box-shadow:var(--shadow)}
+.panel-intro{color:var(--muted);font-size:13px;margin:7px 0 15px}
+label{display:block;font-weight:700;font-size:13px;margin:14px 0 0}
+input,select,textarea{width:100%;margin-top:6px;padding:13px 14px;border:1px solid var(--border);border-radius:13px;background:var(--surface);color:var(--text);min-width:0}
+textarea{resize:vertical}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;text-align:center;text-decoration:none;font-weight:800;background:var(--green);color:#fff;border:1px solid var(--green);border-radius:14px;padding:13px 16px;margin-top:13px;cursor:pointer}
+:root[data-theme="dark"] .btn{color:#06170d}
+.btn:disabled{opacity:.65;cursor:wait}
+.btn.ghost{background:transparent;color:var(--green);border-color:var(--border)}
+.btn.red{background:transparent;color:var(--red);border-color:var(--red)}
+.link{border:0;background:none;color:var(--red);text-decoration:underline;padding:4px 0;font-size:13px}
+.row{display:flex;gap:10px;align-items:center}
+.row>.btn{flex:1}
+.row.wrap{flex-wrap:wrap}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:9;display:flex;justify-content:center;gap:5px;background:var(--surface);border-top:1px solid var(--border);padding:7px 10px calc(7px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 25px #142e1c0a}
+nav button{border:0;background:transparent;color:var(--muted);border-radius:13px;flex:1;max-width:230px;padding:9px 5px;font-size:11px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button .nav-icon{font-size:19px;line-height:1.1}
+nav button.on{background:var(--green-soft);color:var(--green)}
+.badge{display:inline-flex;align-items:center;gap:5px;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800;border-radius:99px;padding:5px 10px}
+.av{width:48px;height:48px;flex:none;border-radius:17px;background:var(--green);color:#fff;display:grid;place-items:center;font:800 20px "Bricolage Grotesque",sans-serif}
+.mine{display:flex;gap:10px;align-items:stretch;margin-top:12px}
+.mine .card{flex:1;min-width:0}
+.mine .card-media,.mine .ph{aspect-ratio:1/1}
+.mine-actions{display:flex;flex-direction:column;justify-content:center;gap:7px;min-width:68px}
+.mine-actions button{font-size:12px}
+.ov{position:fixed;inset:0;background:#07160dcc;z-index:20;display:flex;align-items:flex-end;justify-content:center;padding-top:30px}
+.sh{background:var(--bg);width:100%;max-width:720px;max-height:94%;overflow:auto;border-radius:25px 25px 0 0;padding:0 18px calc(22px + env(safe-area-inset-bottom,0px));position:relative;box-shadow:0 -10px 40px #0002}
+.sh>img,.sh>.ph{margin:0 -18px 15px;width:calc(100% + 36px);border-radius:25px 25px 0 0;max-height:420px;aspect-ratio:4/3;object-fit:cover}
+.sh>.ph{aspect-ratio:4/3}
+.x{position:absolute;right:13px;top:13px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;z-index:2;font-size:20px}
+.gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -18px 14px;scrollbar-width:none}
+.gal img{flex:none;width:100%;max-height:420px;aspect-ratio:4/3;object-fit:cover;scroll-snap-align:center}
+.pr{font:800 27px "Bricolage Grotesque",sans-serif;color:var(--green);margin:8px 0}
+.sel{display:flex;gap:11px;align-items:center;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:11px;margin:14px 0;cursor:pointer;text-align:left;color:var(--text)}
+.sel .sel-copy{display:flex;flex-direction:column;font-weight:800}
+.sel small{font-weight:400}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.th{position:relative}
+.th img{width:78px;height:78px;object-fit:cover;border-radius:12px;display:block}
+.x2{position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;border:0;background:#17251c;color:#fff;cursor:pointer;font-size:12px}
+#toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:max-content;max-width:calc(100% - 32px);background:var(--text);color:var(--bg);padding:12px 17px;border-radius:13px;z-index:30;font-size:13px;font-weight:700;box-shadow:var(--shadow)}
+footer{max-width:900px;margin:28px auto 0;text-align:center;font-size:12px;color:var(--muted)}
+footer button{color:var(--muted);border:0;background:none;text-decoration:underline;font-size:12px}
+.gal-hint{text-align:center;color:var(--muted);font-size:12px;margin:-5px 0 12px}
+@media(min-width:620px){body{padding-bottom:25px}.topbar{padding:14px max(20px,calc((100vw - 1000px)/2))}.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}main{padding:24px 22px 40px}.hero{padding:35px 34px}.hero p{font-size:15px}nav{position:static;box-shadow:none;border-top:1px solid var(--border);padding:10px}nav button{flex-direction:row;justify-content:center;font-size:13px}.sh{margin:auto;max-height:88%;border-radius:25px}.ov{align-items:center;padding:20px}.panel{padding:25px}}
+@media(min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.hero{padding:40px}.hero h1{max-width:620px}}
+@media(prefers-reduced-motion:no-preference){.card{animation:appear .18s ease-out}@keyframes appear{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" onclick="go('home');return false" aria-label="Bénin Market accueil">
+    <span class="brand-mark">B</span><span class="brand-name">Bénin <span>Market</span></span>
+  </a>
+  <div class="header-actions">
+    <button class="icon-btn" onclick="toggleTheme()" aria-label="Changer le thème" title="Thème clair ou sombre">◐</button>
+    <button class="icon-btn" onclick="go('pub')" aria-label="Publier une annonce" title="Publier">＋</button>
+  </div>
+</header>
+<main id="main" aria-live="polite"></main>
+<div id="sheet"></div>
+<footer><button onclick="go('cgu')">Conditions d’utilisation</button> · <button onclick="go('privacy')">Confidentialité</button></footer>
+<nav aria-label="Navigation principale">
+  <button data-v="home" onclick="go('home')"><span class="nav-icon">⌂</span>Annonces</button>
+  <button data-v="pub" onclick="go('pub')"><span class="nav-icon">＋</span>Publier</button>
+  <button data-v="me" onclick="go('me')"><span class="nav-icon">♙</span>Profil</button>
+</nav>
+<div id="toast-region" aria-live="polite"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.93.0/dist/umd/supabase.js"></script>
+<script>
+"use strict";
+const SB_URL="https://gsbrfzrifnzmyvcnerrv.supabase.co";
+const SB_KEY="sb_publishable_hMg7buwzeVqOvN8-ozE43g_rPzQ9dEc";
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const CATS=["Téléphones","Mode","Maison","Véhicules","Autres"];
+const CAT_ICONS={"Tout":"✦","Téléphones":"📱","Mode":"👕","Maison":"🏠","Véhicules":"🚗","Autres":"🛍️"};
+const LOC=[["Cotonou","Littoral"],["Abomey-Calavi","Atlantique"],["Ouidah","Atlantique"],["Allada","Atlantique"],["Porto-Novo","Ouémé"],["Sèmè-Kpodji","Ouémé"],["Parakou","Borgou"],["Bohicon","Zou"],["Abomey","Zou"],["Lokossa","Mono"],["Grand-Popo","Mono"],["Dogbo","Couffo"],["Aplahoué","Couffo"],["Dassa-Zoumè","Collines"],["Savalou","Collines"],["Djougou","Donga"],["Natitingou","Atacora"],["Kandi","Alibori"],["Pobè","Plateau"],["Sakété","Plateau"],["Autre ville du Bénin","Bénin"],["Hors du Bénin","International"]];
+const CONTACT="inecksowanou@gmail.com";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const dep=v=>(LOC.find(l=>l[0]===v)||["",""])[1];
+const digits=s=>String(s||"").replace(/\D/g,"");
+const fmt=n=>Number(n||0).toLocaleString("fr-FR")+" FCFA";
+const vu=n=>Number(n||0)+" vue"+(Number(n||0)>1?"s":"");
+let ME=null,BLOCKED=[],ADS=[],loading=true,view="home",q="",cat="Tout",sel=null,sid=null,mode="in",how="tel",pblobs=[],EXIST=[],editId=null,busy=false;
+const SEEN=new Set();
+function toast(message){const old=$("#toast");if(old)old.remove();const t=document.createElement("div");t.id="toast";t.textContent=message;document.body.appendChild(t);setTimeout(()=>t.remove(),3600)}
+function toggleTheme(){const root=document.documentElement;const dark=root.dataset.theme!=="dark";root.dataset.theme=dark?"dark":"light";try{localStorage.setItem("bm-theme",root.dataset.theme)}catch(e){}}
+try{const savedTheme=localStorage.getItem("bm-theme");if(savedTheme)document.documentElement.dataset.theme=savedTheme}catch(e){}
+function go(v){view=v;sel=null;sheet();render();window.scrollTo({top:0,behavior:"smooth"})}
+function thumb(a){const url=a.image_url||((a.images&&a.images[0])||"");return url?`<img class="card-media" src="${esc(url)}" alt="${esc(a.title||"Photo de l’article")}" loading="lazy">`:`<div class="ph" aria-label="Aucune photo">${esc((a.title||a.category||"?").trim().charAt(0).toUpperCase())}</div>`}
+function card(a){return `<button class="card" onclick="openAd('${esc(a.id)}')" aria-label="Voir ${esc(a.title)}">${thumb(a)}${a.sold?'<span class="sold">Vendu</span>':""}<div class="card-body"><div class="price">${fmt(a.price)}</div><div class="card-title">${esc(a.title)}</div><div class="card-meta"><span>⌖ ${esc(a.city||"Bénin")}</span><span>·</span><span>${vu(a.views||0)}</span></div></div></button>`}
+async function loadAds(){loading=true;if(view==="home")list();const {data,error}=await sb.from("ads").select("*, profiles(name,phone,email)").order("created_at",{ascending:false}).limit(300);loading=false;if(error){ADS=[];toast("Impossible de charger les annonces. Vérifiez votre connexion.")}else ADS=data||[];if(view==="home")list();else if(view==="seller"||view==="me")render()}
+function render(){const m=$("#main");renderView();document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===view))}
+function renderView(){const m=$("#main");if(view==="home"){m.innerHTML=`<section class="hero"><div class="hero-kicker">🇧🇯 LE MARCHÉ BÉNINOIS</div><h1>Trouvez votre bonheur.</h1><p>Achetez et vendez facilement près de chez vous.</p><div class="search-wrap"><span class="search-icon">⌕</span><input id="q" type="search" placeholder="Que recherchez-vous ?" value="${esc(q)}" oninput="q=this.value;list()" aria-label="Rechercher un article, une ville ou une région"></div><div class="hero-foot"><span>✓ Annonces locales</span><span>✓ Contact direct</span><span>✓ Prix en FCFA</span></div></section><div class="section-head"><div><h2>À découvrir</h2><p class="section-sub">Les bonnes affaires du moment</p></div></div><div class="chips">${["Tout",...CATS].map(c=>`<button class="chip ${c===cat?"on":""}" onclick="cat='${c}';render()">${CAT_ICONS[c]} ${c}</button>`).join("")}</div><div id="grid" class="grid"></div>`;list()}
+else if(view==="pub"){ME?pubForm(m):loginForm(m,"Connectez-vous pour publier")}
+else if(view==="me"){ME?profile(m,ME.id,true):loginForm(m,"Connexion ou inscription")}
+else if(view==="seller"){profile(m,sid,false)}
+else if(view==="edit"){const a=ADS.find(x=>x.id===editId);if(ME&&a&&a.seller_id===ME.id)pubForm(m,a);else m.innerHTML='<p class="empty">Annonce introuvable.</p>'}
+else if(view==="newpw"){newPwForm(m)}
+else if(view==="cgu"){m.innerHTML=CGU}
+else if(view==="privacy"){m.innerHTML=PRIV}}
+function list(){const g=$("#grid");if(!g)return;if(loading&&!ADS.length){g.innerHTML='<p class="empty">Chargement des annonces…</p>';return}const t=norm(q.trim());const r=ADS.filter(a=>!BLOCKED.includes(a.seller_id)&&(cat==="Tout"||a.category===cat)&&(!t||norm([a.title,a.description,a.city,a.region].join(" ")).includes(t))).sort((x,y)=>(x.sold?1:0)-(y.sold?1:0));g.innerHTML=r.length?r.map(card).join(""):`<p class="empty">${ADS.length?"Aucune annonce trouvée. Essayez un autre mot ou une autre catégorie.":"Aucune annonce pour l’instant. Soyez le premier à publier !"}</p>`}
+function loginForm(m,msg){m.innerHTML=`<div class="panel"><h2>${esc(msg)}</h2><p class="panel-intro">Rejoignez la communauté Bénin Market pour acheter et vendre simplement.</p><div class="chips"><button class="chip ${mode==="in"?"on":""}" onclick="mode='in';render()">Connexion</button><button class="chip ${mode==="up"?"on":""}" onclick="mode='up';render()">Inscription</button></div><div class="chips" style="padding-top:0"><button class="chip ${how==="tel"?"on":""}" onclick="how='tel';render()">Téléphone</button><button class="chip ${how==="mail"?"on":""}" onclick="how='mail';render()">Email</button></div>${mode==="up"?'<label>Votre nom<input id="nm" maxlength="80" autocomplete="name" placeholder="Nom et prénom"></label>':""}<label>${how==="tel"?"Numéro de téléphone":"Adresse email"}<input id="ct" ${how==="tel"?'type="tel" inputmode="tel" placeholder="+229 01 00 00 00"':'type="email" placeholder="nom@exemple.com"'} autocomplete="username"></label><label>Mot de passe<input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}" placeholder="${mode==="up"?"6 caractères minimum":"Votre mot de passe"}"></label><button class="btn" id="goAuth" onclick="submitAuth()">${mode==="up"?"Créer mon compte":"Se connecter"}</button>${mode==="in"?'<p style="margin:12px 0 0"><button class="link" style="color:var(--muted)" onclick="forgot()">Mot de passe oublié ?</button></p>':""}</div>`}
+function authError(e){return "Erreur : "+(e&&e.message||e)+" ["+(e&&(e.code||e.status)||"")+"]"}
+async function submitAuth(){if(busy)return;const ct=$("#ct").value.trim(),pw=$("#pw").value,name=mode==="up"?$("#nm").value.trim():"";let cred;if(how==="tel"){if(!/^[+\d\s().-]{8,}$/.test(ct))return toast("Numéro de téléphone invalide.");const d=digits(ct);cred={phone:"+"+(ct.startsWith("+")?d:"229"+d)}}else{if(!/^\S+@\S+\.\S+$/.test(ct))return toast("Adresse email invalide.");cred={email:ct.toLowerCase()}}if(mode==="up"){if(!name)return toast("Entrez votre nom.");if(pw.length<6)return toast("Le mot de passe doit avoir au moins 6 caractères.")}
+busy=true;const b=$("#goAuth");if(b){b.disabled=true;b.textContent="Patientez…"}try{if(mode==="up"){const {data,error}=await sb.auth.signUp({...cred,password:pw,options:{data:{name}}});if(error)throw error;if(!data.session){toast("Compte créé. Vérifiez vos messages pour confirmer votre inscription.");return}toast("Bienvenue "+name)}else{const {error}=await sb.auth.signInWithPassword({...cred,password:pw});if(error)throw error;toast("Connexion réussie")}view="me";render()}catch(e){toast(authError(e))}finally{busy=false;const btn=$("#goAuth");if(btn){btn.disabled=false;btn.textContent=mode==="up"?"Créer mon compte":"Se connecter"}}}
+function pubForm(m,a){pblobs=[];editId=a?a.id:null;EXIST=a?((a.images&&a.images.length)?[...a.images]:(a.image_url?[a.image_url]:[])):[];m.innerHTML=`<div class="panel"><h2>${a?"Modifier l’annonce":"Publier une annonce"}</h2><p class="panel-intro">${a?"Mettez votre annonce à jour.":"Présentez votre article clairement pour attirer les acheteurs."}</p><label>Titre<input id="t" maxlength="70" value="${a?esc(a.title):""}" placeholder="Ex. iPhone 13 en très bon état"></label><label>Prix en FCFA<input id="p" type="number" inputmode="numeric" min="1" step="1" value="${a?esc(a.price):""}" placeholder="Ex. 85000"></label><label>Catégorie<select id="c">${CATS.map(c=>`<option ${a&&a.category===c?"selected":""}>${c}</option>`).join("")}</select></label><label>Ville<select id="v">${LOC.map(l=>`<option value="${l[0]}" ${a&&a.city===l[0]?"selected":""}>${l[0]} (${l[1]})</option>`).join("")}</select></label><label>Description<textarea id="d" rows="4" maxlength="3000" placeholder="Décrivez l’état, les caractéristiques et les détails utiles…">${a?esc(a.description):""}</textarea></label><label>Photos (5 maximum)<input type="file" accept="image/*" multiple onchange="pick(this)"></label><div id="pvs" class="thumbs"></div><button class="btn" id="pb" onclick="${a?"saveEdit()":"publish()"}">${a?"Enregistrer les modifications":"Publier l’annonce"}</button>${a?'<button class="btn ghost" onclick="go(&quot;me&quot;)">Annuler</button>':""}</div>`;if(a)showThumbs()}
+function shrink(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),i=new Image();i.onload=()=>{const k=Math.min(1,1200/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.round(i.width*k);c.height=Math.round(i.height*k);c.getContext("2d").drawImage(i,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?ok(b):no(new Error("Photo illisible")),"image/jpeg",.82)};i.onerror=()=>{URL.revokeObjectURL(u);no(new Error("Photo illisible"))};i.src=u})}
+async function pick(inp){const all=[...inp.files],fs=all.slice(0,Math.max(0,5-EXIST.length-pblobs.length));inp.value="";if(fs.length<all.length)toast("5 photos maximum.");for(const f of fs){if(!f.type.startsWith("image/")){toast("Choisissez uniquement des images.");continue}try{pblobs.push(await shrink(f))}catch(e){toast("Photo illisible, essayez-en une autre.")}}showThumbs()}
+function showThumbs(){const el=$("#pvs");if(!el)return;el.innerHTML=EXIST.map((u,i)=>`<span class="th"><img src="${esc(u)}" alt="Photo ${i+1}"><button type="button" class="x2" onclick="rmExist(${i})" aria-label="Retirer la photo">×</button></span>`).join("")+pblobs.map((b,i)=>`<span class="th"><img src="${URL.createObjectURL(b)}" alt="Nouvelle photo ${i+1}"><button type="button" class="x2" onclick="rmPhoto(${i})" aria-label="Retirer la photo">×</button></span>`).join("")}
+function rmExist(i){EXIST.splice(i,1);showThumbs()}
+function rmPhoto(i){pblobs.splice(i,1);showThumbs()}
+function gallery(a){const im=(a.images&&a.images.length)?a.images:(a.image_url?[a.image_url]:[]);if(!im.length)return thumb(a);return `<div class="gal">${im.map((u,i)=>`<img src="${esc(u)}" alt="${esc(a.title)} — photo ${i+1}">`).join("")}</div>${im.length>1?`<p class="gal-hint">${im.length} photos · faites glisser pour voir les autres</p>`:""}`}
+function countView(id){const a=ADS.find(x=>x.id===id);if(!a||SEEN.has(id)||(ME&&ME.id===a.seller_id))return;SEEN.add(id);a.views=(a.views||0)+1;sb.rpc("increment_views",{ad_id:id}).then(()=>{},()=>{})}
+function openAd(id){sel=id;countView(id);sheet()}
+async function uploadAll(images){for(const b of pblobs){const path=ME.id+"/"+Date.now()+"-"+Math.random().toString(36).slice(2,8)+".jpg";const up=await sb.storage.from("photos").upload(path,b,{contentType:"image/jpeg",upsert:false});if(up.error)throw up.error;images.push(sb.storage.from("photos").getPublicUrl(path).data.publicUrl)}return images}
+async function publish(){if(busy)return;const title=$("#t").value.trim(),price=Number($("#p").value);if(!title||!(price>0)||!Number.isFinite(price))return toast("Ajoutez un titre et un prix valide.");busy=true;const b=$("#pb");b.disabled=true;b.textContent="Publication…";try{const images=await uploadAll([]),city=$("#v").value;const {error}=await sb.from("ads").insert({title,price,category:$("#c").value,city,region:dep(city),description:$("#d").value.trim(),image_url:images[0]||null,images});if(error)throw error;q="";cat="Tout";await loadAds();go("home");toast("Annonce publiée avec succès.")}catch(e){toast("Échec de la publication : "+(e.message||e))}finally{busy=false;if($("#pb")){ $("#pb").disabled=false;$("#pb").textContent="Publier l’annonce"}}}
+async function saveEdit(){if(busy)return;const title=$("#t").value.trim(),price=Number($("#p").value);if(!title||!(price>0)||!Number.isFinite(price))return toast("Ajoutez un titre et un prix valide.");busy=true;const b=$("#pb");b.disabled=true;b.textContent="Enregistrement…";try{const images=await uploadAll([...EXIST]),city=$("#v").value;const {error}=await sb.from("ads").update({title,price,category:$("#c").value,city,region:dep(city),description:$("#d").value.trim(),image_url:images[0]||null,images}).eq("id",editId);if(error)throw error;await loadAds();go("me");toast("Annonce modifiée avec succès.")}catch(e){toast("Échec de l’enregistrement : "+(e.message||e))}finally{busy=false;if($("#pb")){$("#pb").disabled=false;$("#pb").textContent="Enregistrer les modifications"}}}
+function editAd(id){editId=id;view="edit";sel=null;sheet();render();window.scrollTo(0,0)}
+async function toggleSold(id){const a=ADS.find(x=>x.id===id);if(!a)return;const {error}=await sb.from("ads").update({sold:!a.sold}).eq("id",id);if(error)return toast("Échec : "+error.message);a.sold=!a.sold;render();toast(a.sold?"Annonce marquée comme vendue.":"Annonce remise en vente.")}
+function contactBtns(u,t){const p=digits(u.phone);if(p)return `<a class="btn" href="https://wa.me/${p}?text=${encodeURIComponent("Bonjour, votre annonce « "+t+" » est-elle toujours disponible ?")}" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="btn ghost" href="tel:+${p}">Appeler</a>`;if(u.email)return `<a class="btn" href="mailto:${esc(u.email)}?subject=${encodeURIComponent(t)}">Écrire un email</a>`;return ""}
+function sheet(){const a=ADS.find(x=>x.id===sel);if(!a){$("#sheet").innerHTML="";return}const u=a.profiles||{name:"Vendeur"},nm=u.name||"Vendeur";$("#sheet").innerHTML=`<div class="ov" onclick="sel=null;sheet()" role="presentation"><section class="sh" role="dialog" aria-modal="true" aria-label="Détails de l’annonce" onclick="event.stopPropagation()"><button class="x" onclick="sel=null;sheet()" aria-label="Fermer">×</button>${gallery(a)}<h2>${esc(a.title)}</h2><p class="pr">${fmt(a.price)}</p><p class="muted">${esc(a.category||"Autres")} · ${esc(a.city||"Bénin")}${a.region?" ("+esc(a.region)+")":""} · ${vu(a.views||0)}</p><p>${esc(a.description||"Pas de description.")}</p><button class="sel" onclick="openSeller('${esc(a.seller_id)}')"><span class="av">${esc(nm[0]||"?")}</span><span class="sel-copy">${esc(nm)}<small>Voir le profil du vendeur</small></span></button>${a.sold?'<p class="pr" style="color:var(--red)">Article vendu</p>':`<div class="row wrap">${contactBtns(u,a.title)}</div>`}<div id="rp" style="margin-top:16px"><button class="link" onclick="reportUI()">Signaler cette annonce</button> &nbsp; <button class="link" onclick="blockSeller('${esc(a.seller_id)}')">Bloquer ce vendeur</button></div></section></div>`}
+function reportUI(){if(!ME){toast("Connectez-vous pour signaler une annonce.");return}$("#rp").innerHTML=`<p class="muted">Pourquoi signalez-vous cette annonce ?</p><div class="row wrap">${["Arnaque","Article interdit","Déjà vendu","Autre"].map(r=>`<button class="chip" onclick="sendReport('${r}')">${r}</button>`).join("")}</div>`}
+async function sendReport(r){const a=ADS.find(x=>x.id===sel);if(!a)return;const {error}=await sb.from("reports").insert({ad_id:sel,reason:r});$("#rp").innerHTML=`<span class="muted">${error?"Échec du signalement. Réessayez.":"Signalement envoyé. Merci."}</span>`}
+function openSeller(id){sid=id;view="seller";sel=null;sheet();render();window.scrollTo(0,0)}
+function profile(m,id,own){const ads=ADS.filter(a=>a.seller_id===id);const u=own?{name:(ME.user_metadata&&ME.user_metadata.name)||"Mon compte",phone:ME.phone,email:ME.email}:((ads[0]&&ads[0].profiles)||{name:"Vendeur"});const nm=u.name||"Vendeur";m.innerHTML=`<div class="panel"><div class="row" style="align-items:center"><span class="av">${esc(nm[0]||"?")}</span><div style="min-width:0"><h2>${esc(nm)}</h2><span class="badge">${u.phone?"Compte téléphone":"Compte email"}</span></div></div><p class="muted" style="margin:15px 0 0">${ads.length} annonce${ads.length>1?"s":""}</p>${own?`<button class="btn ghost" onclick="go('newpw')">Changer mon mot de passe</button><button class="btn red" onclick="logout()">Se déconnecter</button>${BLOCKED.length?`<button class="btn ghost" onclick="unblockAll()">Débloquer les vendeurs (${BLOCKED.length})</button>`:""}<div id="dz" style="margin-top:17px"><button class="link" onclick="askDelete()">Supprimer mon compte</button></div>`:`<div class="row wrap">${contactBtns(u,"vos annonces")}</div><div style="margin-top:12px">${BLOCKED.includes(id)?`<button class="link" onclick="unblock('${esc(id)}')">Débloquer ce vendeur</button>`:`<button class="link" onclick="blockSeller('${esc(id)}')">Bloquer ce vendeur</button>`}</div>`}</div><div class="section-head"><div><h2>${own?"Mes annonces":"Ses annonces"}</h2><p class="section-sub">Les articles proposés par ${own?"vous":"ce vendeur"}</p></div></div><div class="grid">${ads.length?ads.map(a=>own?`<div class="mine">${card(a)}<div class="mine-actions"><button class="link" style="color:var(--green)" onclick="editAd('${esc(a.id)}')">Modifier</button><button class="link" style="color:var(--green)" onclick="toggleSold('${esc(a.id)}')">${a.sold?"Remettre en vente":"Marquer vendu"}</button><button class="link" onclick="delAd('${esc(a.id)}')">Supprimer</button></div></div>`:card(a)).join(""):'<p class="empty">Aucune annonce pour l’instant.</p>'}</div>`}
+async function delAd(id){if(!confirm("Supprimer définitivement cette annonce ?"))return;const {error}=await sb.from("ads").delete().eq("id",id);if(error)return toast("Suppression impossible : "+error.message);await loadAds();render();toast("Annonce supprimée.")}
+async function logout(){await sb.auth.signOut();ME=null;BLOCKED=[];go("home");toast("Vous êtes déconnecté.")}
+async function loadBlocks(){if(!ME){BLOCKED=[];return}const {data,error}=await sb.from("blocks").select("blocked_id");if(!error)BLOCKED=(data||[]).map(r=>r.blocked_id);if(view==="home")list()}
+async function blockSeller(id){if(!ME){toast("Connectez-vous pour bloquer un vendeur.");return}if(id===ME.id){toast("C’est votre propre annonce.");return}const {error}=await sb.from("blocks").insert({blocked_id:id});if(error&&error.code!=="23505")return toast("Blocage impossible : "+error.message);if(!BLOCKED.includes(id))BLOCKED.push(id);sel=null;sheet();go("home");toast("Vendeur bloqué.")}
+async function unblock(id){const {error}=await sb.from("blocks").delete().eq("blocked_id",id);if(error)return toast("Échec : "+error.message);BLOCKED=BLOCKED.filter(x=>x!==id);render();toast("Vendeur débloqué.")}
+async function unblockAll(){if(!confirm("Débloquer tous les vendeurs ?"))return;const {error}=await sb.from("blocks").delete().in("blocked_id",BLOCKED);if(error)return toast("Échec : "+error.message);BLOCKED=[];render();toast("Vendeurs débloqués.")}
+function askDelete(){$("#dz").innerHTML='<p class="muted">Cette action est définitive : votre compte, votre profil et vos annonces seront supprimés.</p><button class="btn red" onclick="doDelete()">Oui, supprimer définitivement</button><button class="btn ghost" onclick="render()">Annuler</button>'}
+async function doDelete(){if(!confirm("Confirmez-vous la suppression définitive de votre compte ?"))return;const {error}=await sb.rpc("delete_my_account");if(error)return toast("Suppression impossible : "+error.message);try{await sb.auth.signOut()}catch(e){}ME=null;BLOCKED=[];await loadAds();go("home");toast("Compte supprimé.")}
+function forgot(){$("#main").innerHTML=`<div class="panel"><h2>Mot de passe oublié</h2><p class="panel-intro">Entrez l’adresse email associée à votre compte pour recevoir un lien de réinitialisation. Pour un compte téléphone, contactez ${CONTACT}.</p><label>Adresse email<input id="fe" type="email" autocomplete="username" placeholder="nom@exemple.com"></label><button class="btn" id="fb" onclick="sendReset()">Envoyer le lien</button><button class="btn ghost" onclick="render()">Retour</button></div>`}
+async function sendReset(){const em=$("#fe").value.trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(em))return toast("Adresse email invalide.");$("#fb").disabled=true;$("#fb").textContent="Envoi…";const {error}=await sb.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname});if($("#fb")){$("#fb").disabled=false;$("#fb").textContent="Envoyer le lien"}if(error)return toast(authError(error));toast("Si ce compte existe, un email vient d’être envoyé.")}
+function newPwForm(m){m.innerHTML='<div class="panel"><h2>Nouveau mot de passe</h2><p class="panel-intro">Choisissez un nouveau mot de passe d’au moins 6 caractères.</p><label>Nouveau mot de passe<input id="np" type="password" autocomplete="new-password"></label><button class="btn" id="nb" onclick="savePw()">Enregistrer</button><button class="btn ghost" onclick="go(&quot;home&quot;)">Annuler</button></div>'}
+async function savePw(){const p=$("#np").value;if(p.length<6)return toast("Le mot de passe doit avoir au moins 6 caractères.");$("#nb").disabled=true;$("#nb").textContent="Patientez…";const {error}=await sb.auth.updateUser({password:p});if(error){if($("#nb")){$("#nb").disabled=false;$("#nb").textContent="Enregistrer"}const c=error.code||"";return toast(c==="same_password"?"Choisissez un mot de passe différent de l’ancien.":c==="reauthentication_needed"?"Pour votre sécurité, reconnectez-vous puis réessayez.":c==="weak_password"?"Mot de passe trop faible. Ajoutez des lettres et des chiffres.":authError(error))}toast("Mot de passe modifié.");go("me")}
+const CGU=`<div class="panel"><h2>Conditions d’utilisation</h2><p class="muted">Dernière mise à jour : 29 octobre 2026</p><p><b>1. Le service.</b> Bénin Market est une plateforme de petites annonces qui met en relation vendeurs et acheteurs. Bénin Market ne vend pas les articles, n’encaisse aucun paiement et n’assure pas la livraison : les transactions se font directement entre utilisateurs, sous leur responsabilité.</p><p><b>2. Compte.</b> Vous devez avoir 18 ans ou l’accord d’un représentant légal. Vous fournissez des informations exactes et gardez votre mot de passe confidentiel.</p><p><b>3. Annonces.</b> Les annonces doivent être honnêtes : article réel, photos représentatives, prix et ville exacts. Les produits illégaux, volés ou contrefaits, les arnaques et les contenus interdits par la loi ne sont pas autorisés.</p><p><b>4. Respect et sécurité.</b> Les insultes, menaces et le harcèlement sont interdits. Signalez les contenus suspects. Rencontrez-vous dans un lieu public, vérifiez l’article avant de payer et ne versez jamais d’argent à l’avance à une personne inconnue.</p><p><b>5. Responsabilité.</b> Bénin Market ne garantit ni la qualité des articles, ni l’identité des utilisateurs, ni le bon déroulement des ventes. Le service peut être modifié ou interrompu.</p><p><b>6. Droit applicable et contact.</b> Ces conditions sont régies par le droit de la République du Bénin. Contact : ${CONTACT}.</p><button class="btn ghost" onclick="go('home')">Retour</button></div>`;
+const PRIV=`<div class="panel"><h2>Politique de confidentialité</h2><p class="muted">Dernière mise à jour : 29 octobre 2026</p><p><b>Données collectées.</b> Nom, téléphone ou email, informations du compte, annonces, photos, signalements et vendeurs bloqués.</p><p><b>Visibilité.</b> Les informations de contact associées à une annonce peuvent être visibles par les acheteurs pour leur permettre de vous contacter. Les signalements ne sont pas publics.</p><p><b>Utilisation.</b> Les données servent au fonctionnement de la plateforme. Elles ne sont pas vendues par Bénin Market.</p><p><b>Hébergement.</b> Les données sont stockées chez Supabase et le site est servi par GitHub Pages.</p><p><b>Suppression et contact.</b> Pour une demande d’accès, de correction ou de suppression, contactez ${CONTACT}. La suppression du compte dépend également des règles de sécurité et de configuration de la base de données.</p><button class="btn ghost" onclick="go('home')">Retour</button></div>`;
+sb.auth.onAuthStateChange((event,session)=>{ME=session?session.user:null;if(ME)setTimeout(loadBlocks,0);else BLOCKED=[];if(event==="PASSWORD_RECOVERY"){view="newpw";render();return}if(view==="me"||view==="pub")render()});
+window.addEventListener("error",e=>toast("Erreur : "+e.message));
+window.addEventListener("unhandledrejection",e=>toast("Erreur : "+((e.reason&&e.reason.message)||e.reason)));
+(async()=>{try{const {data}=await sb.auth.getSession();ME=data.session?data.session.user:null;render();await Promise.all([loadAds(),loadBlocks()])}catch(e){render();toast("Connexion au service impossible. Réessayez.")}})();
+</script>
+</body>
+</html>
