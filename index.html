@@ -1,1 +1,164 @@
-index.html
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bénin Market</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#F4F7F2;--sf:#fff;--tx:#17231B;--mt:#5B6B60;--gr:#0E6B3B;--on:#fff;--gr2:#E0F0E6;--ye:#F2B705;--rd:#C8352B;--bd:#DAE3DB;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1612;--sf:#18221B;--tx:#EAF1EC;--mt:#9DB0A3;--gr:#4CC083;--on:#07140C;--gr2:#1E3427;--bd:#2A3A2F;--rd:#F0766C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F1612;--sf:#18221B;--tx:#EAF1EC;--mt:#9DB0A3;--gr:#4CC083;--on:#07140C;--gr2:#1E3427;--bd:#2A3A2F;--rd:#F0766C;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.45 "DM Sans",system-ui,sans-serif}
+header{padding:14px 16px 4px;display:flex;align-items:center;gap:10px}
+.logo{font:800 22px "Bricolage Grotesque",sans-serif;letter-spacing:-.02em}
+.logo i{font-style:normal;color:var(--gr)}
+.bar{width:28px;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--gr) 33%,var(--ye) 33% 66%,var(--rd) 66%)}
+main{max-width:640px;margin:0 auto;padding:8px 16px}
+input,select,textarea{width:100%;font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:11px 12px}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
+label{display:block;font-weight:500;margin:12px 0 0}
+label input,label select,label textarea{margin-top:4px;font-weight:400}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0}
+.chip{flex:none;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:99px;padding:6px 14px;font:inherit;cursor:pointer}
+.chip.on{background:var(--gr);color:var(--on);border-color:var(--gr)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.card{all:unset;box-sizing:border-box;background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;display:block}
+.card img,.ph,.sh>img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.ph{display:grid;place-items:center;background:var(--gr2);color:var(--gr);font:800 40px "Bricolage Grotesque",sans-serif}
+.ci{padding:8px 10px 10px;display:flex;flex-direction:column;gap:2px}
+.ci b{color:var(--gr)}.ci span{font-size:15px}.ci small,.mt,small{color:var(--mt)}
+.empty{grid-column:1/-1;text-align:center;color:var(--mt);padding:32px 0}
+.btn{display:block;text-align:center;text-decoration:none;font:700 16px "DM Sans",sans-serif;background:var(--gr);color:var(--on);border:1px solid var(--gr);border-radius:10px;padding:12px 16px;margin-top:14px;cursor:pointer;flex:1}
+.btn.ghost{background:transparent;color:var(--gr)}
+.btn.red{background:transparent;color:var(--rd);border-color:var(--rd)}
+.link{all:unset;color:var(--rd);text-decoration:underline;cursor:pointer;font-size:14px}
+.panel{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:18px;margin-top:8px}
+h2{font:800 22px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 4px}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--sf);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{all:unset;flex:1;text-align:center;padding:12px 0;color:var(--mt);cursor:pointer;font-weight:500}
+nav button.on{color:var(--gr);font-weight:700}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sh{background:var(--bg);width:100%;max-width:640px;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:0 16px calc(20px + env(safe-area-inset-bottom,0px));position:relative}
+.sh>img,.sh>.ph{margin:0 -16px 12px;width:calc(100% + 32px);border-radius:18px 18px 0 0}
+.x{position:absolute;right:12px;top:12px;width:36px;height:36px;border-radius:50%;border:0;background:var(--sf);color:var(--tx);cursor:pointer;z-index:2}
+.pr{font:800 22px "Bricolage Grotesque",sans-serif;color:var(--gr);margin:2px 0}
+.row{display:flex;gap:10px}
+.sel{all:unset;box-sizing:border-box;display:flex;gap:10px;align-items:center;width:100%;background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:10px;cursor:pointer;margin:8px 0}
+.sel span:last-child{display:flex;flex-direction:column;font-weight:700}
+.av{width:42px;height:42px;border-radius:50%;background:var(--gr);color:var(--on);display:grid;place-items:center;font-weight:800;font-size:18px}
+.badge{display:inline-block;background:var(--gr2);color:var(--gr);font-size:13px;font-weight:700;border-radius:99px;padding:2px 10px}
+.mine{display:flex;gap:10px;align-items:center;margin-top:10px}
+.mine .card{flex:1}
+#pv{width:100%;max-height:200px;object-fit:cover;border-radius:10px;margin-top:8px}
+#toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 16px;border-radius:10px;z-index:20;font-size:15px}
+@media (prefers-reduced-motion:no-preference){.sh{animation:up .2s ease-out}@keyframes up{from{transform:translateY(30px);opacity:.6}}}
+</style></head>
+<body>
+<header><span class="bar"></span><span class="logo">Bénin <i>Market</i></span></header>
+<main id="main"></main>
+<div id="sheet"></div>
+<nav><button data-v="home" onclick="go('home')">Annonces</button><button data-v="pub" onclick="go('pub')">Publier</button><button data-v="me" onclick="go('me')">Profil</button></nav>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.93.0/dist/umd/supabase.js"></script>
+<script>
+const SB_URL="https://gsbrfzrifnzmyvcnerrv.supabase.co",SB_KEY="sb_publishable_76MZ9tGKsg7qwg9AhzEQ8Q_uQhqvKiR";
+const sb=supabase.createClient(SB_URL,SB_KEY);
+const CATS=["Téléphones","Mode","Maison","Véhicules","Autres"];
+const LOC=[["Cotonou","Littoral"],["Abomey-Calavi","Atlantique"],["Ouidah","Atlantique"],["Allada","Atlantique"],["Porto-Novo","Ouémé"],["Sèmè-Kpodji","Ouémé"],["Parakou","Borgou"],["Bohicon","Zou"],["Abomey","Zou"],["Lokossa","Mono"],["Grand-Popo","Mono"],["Dogbo","Couffo"],["Aplahoué","Couffo"],["Dassa-Zoumè","Collines"],["Savalou","Collines"],["Djougou","Donga"],["Natitingou","Atacora"],["Kandi","Alibori"],["Pobè","Plateau"],["Sakété","Plateau"],["Autre ville du Bénin","Bénin"],["Hors du Bénin","International"]];
+const dep=v=>(LOC.find(l=>l[0]===v)||["",""])[1];
+const norm=s=>String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt=n=>Number(n).toLocaleString("fr-FR")+" FCFA";
+const digits=s=>String(s||"").replace(/\D/g,"");
+let ME=null,ADS=[],loading=true,view="home",q="",cat="Tout",sel=null,sid=null,mode="in",how="tel",pblob=null,busy=false;
+function toast(m){const o=$("#toast");if(o)o.remove();const t=document.createElement("div");t.id="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3200)}
+function go(v){view=v;sel=null;sheet();render();scrollTo(0,0)}
+function thumb(a){return a.image_url?`<img src="${esc(a.image_url)}" alt="${esc(a.title)}" loading="lazy">`:`<div class="ph">${esc((a.category||"?")[0])}</div>`}
+function card(a){return`<button class="card" onclick="openAd('${esc(a.id)}')">${thumb(a)}<div class="ci"><b>${fmt(a.price)}</b><span>${esc(a.title)}</span><small>${esc(a.city)}</small></div></button>`}
+async function loadAds(){loading=true;list();
+ const {data,error}=await sb.from("ads").select("*, profiles(name,phone,email)").order("created_at",{ascending:false}).limit(300);
+ loading=false;
+ if(error){ADS=[];toast("Impossible de charger les annonces. Vérifiez votre connexion.")}else ADS=data;
+ if(view==="home")list();else if(view==="seller")render()}
+function render(){
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.v===view));
+ const m=$("#main");
+ if(view==="home"){m.innerHTML=`<input id="q" type="search" placeholder="Chercher un article, une ville ou une région…" value="${esc(q)}" oninput="q=this.value;list()" aria-label="Rechercher"><div class="chips">${["Tout",...CATS].map(c=>`<button class="chip ${c===cat?"on":""}" onclick="cat='${c}';render()">${c}</button>`).join("")}</div><div id="grid" class="grid"></div>`;list()}
+ else if(view==="pub"){ME?pubForm(m):loginForm(m,"Connectez-vous pour publier")}
+ else if(view==="me"){ME?profile(m,ME.id,true):loginForm(m,"Connexion ou inscription")}
+ else if(view==="seller"){profile(m,sid,false)}}
+function list(){const g=$("#grid");if(!g)return;
+ if(loading&&!ADS.length){g.innerHTML=`<p class="empty">Chargement des annonces…</p>`;return}
+ const t=norm(q.trim());
+ const r=ADS.filter(a=>(cat==="Tout"||a.category===cat)&&(!t||norm(a.title+" "+a.description+" "+a.city+" "+a.region).includes(t)));
+ g.innerHTML=r.length?r.map(card).join(""):`<p class="empty">${ADS.length?"Aucune annonce trouvée. Essayez un autre mot, une autre ville ou une autre catégorie.":"Aucune annonce pour l’instant. Soyez le premier à publier !"}</p>`}
+function loginForm(m,msg){
+ m.innerHTML=`<div class="panel"><h2>${msg}</h2><div class="chips"><button class="chip ${mode==="in"?"on":""}" onclick="mode='in';render()">Connexion</button><button class="chip ${mode==="up"?"on":""}" onclick="mode='up';render()">Inscription</button></div><div class="chips" style="padding-top:0"><button class="chip ${how==="tel"?"on":""}" onclick="how='tel';render()">Téléphone</button><button class="chip ${how==="mail"?"on":""}" onclick="how='mail';render()">Email</button></div>${mode==="up"?`<label>Votre nom<input id="nm" autocomplete="name"></label>`:""}<label>${how==="tel"?"Numéro de téléphone":"Adresse email"}<input id="ct" ${how==="tel"?'type="tel" inputmode="tel" placeholder="01 97 00 00 00"':'type="email" placeholder="nom@mail.com"'} autocomplete="username"></label><label>Mot de passe${mode==="up"?" (6 caractères minimum)":""}<input id="pw" type="password" autocomplete="${mode==="up"?"new-password":"current-password"}"></label><button class="btn" id="go" onclick="submitAuth()">${mode==="up"?"Créer mon compte":"Se connecter"}</button></div>`}
+function authError(e){const m=(e.message||"").toLowerCase();
+ if(m.includes("invalid login"))return"Identifiant ou mot de passe incorrect.";
+ if(m.includes("already")||m.includes("registered"))return"Ce compte existe déjà. Connectez-vous.";
+ if(m.includes("provider")||m.includes("disabled"))return"Ce type d’inscription est désactivé dans Supabase.";
+ if(m.includes("password"))return"Mot de passe trop court ou refusé (6 caractères minimum).";
+ return"Erreur : "+e.message}
+async function submitAuth(){
+ if(busy)return;
+ const ct=$("#ct").value.trim(),pw=$("#pw").value,name=mode==="up"?$("#nm").value.trim():"";
+ let cred;
+ if(how==="tel"){if(!/^[+\d\s().-]{8,}$/.test(ct))return toast("Numéro de téléphone invalide.");const d=digits(ct);cred={phone:"+"+(ct.startsWith("+")?d:"229"+d)}}
+ else{if(!/^\S+@\S+\.\S+$/.test(ct))return toast("Adresse email invalide.");cred={email:ct.toLowerCase()}}
+ if(mode==="up"){if(!name)return toast("Entrez votre nom.");if(pw.length<6)return toast("Le mot de passe doit avoir au moins 6 caractères.")}
+ busy=true;$("#go").textContent="Patientez…";
+ try{
+  if(mode==="up"){const {data,error}=await sb.auth.signUp({...cred,password:pw,options:{data:{name}}});
+   if(error)throw error;
+   if(!data.session){toast("Compte créé, mais Supabase demande une confirmation. Désactivez « Confirm email » et « Confirm phone ».");return}
+   toast("Bienvenue "+name)}
+  else{const {error}=await sb.auth.signInWithPassword({...cred,password:pw});if(error)throw error;toast("Connexion réussie")}
+ }catch(e){toast(authError(e))}
+ finally{busy=false;if($("#go"))$("#go").textContent=mode==="up"?"Créer mon compte":"Se connecter"}}
+function pubForm(m){pblob=null;
+ m.innerHTML=`<div class="panel"><h2>Publier une annonce</h2><label>Titre<input id="t" maxlength="70"></label><label>Prix en FCFA<input id="p" type="number" inputmode="numeric" min="0"></label><label>Catégorie<select id="c">${CATS.map(c=>`<option>${c}</option>`).join("")}</select></label><label>Ville<select id="v">${LOC.map(l=>`<option value="${l[0]}">${l[0]} (${l[1]})</option>`).join("")}</select></label><label>Description<textarea id="d" rows="3"></textarea></label><label>Photo<input type="file" accept="image/*" onchange="pick(this)"></label><img id="pv" alt="Aperçu" hidden><button class="btn" id="pb" onclick="publish()">Publier l’annonce</button></div>`}
+function pick(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const k=Math.min(1,900/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=i.width*k;c.height=i.height*k;c.getContext("2d").drawImage(i,0,0,c.width,c.height);c.toBlob(b=>{pblob=b;$("#pv").src=URL.createObjectURL(b);$("#pv").hidden=false},"image/jpeg",.78)};i.src=r.result};r.readAsDataURL(f)}
+async function publish(){
+ if(busy)return;
+ const title=$("#t").value.trim(),price=+$("#p").value;
+ if(!title||!(price>0))return toast("Ajoutez un titre et un prix.");
+ busy=true;$("#pb").textContent="Publication…";
+ try{
+  let image_url=null;
+  if(pblob){const path=ME.id+"/"+Date.now()+".jpg";
+   const up=await sb.storage.from("photos").upload(path,pblob,{contentType:"image/jpeg"});
+   if(up.error)throw up.error;
+   image_url=sb.storage.from("photos").getPublicUrl(path).data.publicUrl}
+  const city=$("#v").value;
+  const {error}=await sb.from("ads").insert({title,price,category:$("#c").value,city,region:dep(city),description:$("#d").value.trim(),image_url});
+  if(error)throw error;
+  q="";cat="Tout";view="home";await loadAds();go("home");toast("Annonce publiée")
+ }catch(e){toast("Échec de la publication : "+e.message)}
+ finally{busy=false;if($("#pb"))$("#pb").textContent="Publier l’annonce"}}
+function contactBtns(u,t){const p=digits(u.phone);
+ if(p)return`<a class="btn" href="https://wa.me/${p}?text=${encodeURIComponent("Bonjour, votre annonce « "+t+" » est-elle toujours disponible ?")}" target="_blank" rel="noopener">WhatsApp</a><a class="btn ghost" href="tel:+${p}">Appeler</a>`;
+ if(u.email)return`<a class="btn" href="mailto:${esc(u.email)}?subject=${encodeURIComponent(t)}">Écrire un email</a>`;
+ return""}
+function openAd(id){sel=id;sheet()}
+function sheet(){const a=ADS.find(x=>x.id===sel);if(!a){$("#sheet").innerHTML="";return}
+ const u=a.profiles||{name:"Vendeur"},nm=u.name||"Vendeur";
+ $("#sheet").innerHTML=`<div class="ov" onclick="sel=null;sheet()"><div class="sh" onclick="event.stopPropagation()"><button class="x" onclick="sel=null;sheet()" aria-label="Fermer">✕</button>${thumb(a)}<h2>${esc(a.title)}</h2><p class="pr">${fmt(a.price)}</p><p class="mt">${esc(a.category)}, ${esc(a.city)} (${esc(a.region)})</p><p>${esc(a.description||"Pas de description.")}</p><button class="sel" onclick="openSeller('${esc(a.seller_id)}')"><span class="av">${esc(nm[0]||"?")}</span><span>${esc(nm)}<small>Voir le profil du vendeur</small></span></button><div class="row">${contactBtns(u,a.title)}</div><p id="rp" style="margin-top:16px"><button class="link" onclick="reportUI()">Signaler cette annonce</button></p></div></div>`}
+function reportUI(){if(!ME){toast("Connectez-vous pour signaler une annonce.");return}
+ $("#rp").innerHTML=`<span class="mt">Motif du signalement :</span><span class="row" style="flex-wrap:wrap;margin-top:6px">${["Arnaque","Article interdit","Déjà vendu","Autre"].map(r=>`<button class="chip" onclick="sendReport('${r}')">${r}</button>`).join("")}</span>`}
+async function sendReport(r){const {error}=await sb.from("reports").insert({ad_id:sel,reason:r});
+ $("#rp").innerHTML=`<span class="mt">${error?"Échec du signalement. Réessayez.":"Signalement envoyé. Merci."}</span>`}
+function openSeller(id){sid=id;view="seller";sel=null;sheet();render();scrollTo(0,0)}
+function profile(m,id,own){
+ const ads=ADS.filter(a=>a.seller_id===id);
+ const u=own?{name:(ME.user_metadata&&ME.user_metadata.name)||"Mon compte",phone:ME.phone,email:ME.email}:((ads[0]&&ads[0].profiles)||{name:"Vendeur"});
+ const nm=u.name||"Vendeur";
+ m.innerHTML=`<div class="panel"><div class="row" style="align-items:center"><span class="av">${esc(nm[0]||"?")}</span><div><h2>${esc(nm)}</h2><span class="badge">${u.phone?"Inscrit par téléphone":"Inscrit par email"}</span></div></div><p class="mt">${ads.length} annonce${ads.length>1?"s":""} en ligne</p>${own?`<button class="btn red" onclick="logout()">Se déconnecter</button>`:`<div class="row">${contactBtns(u,"vos annonces")}</div>`}</div>
+ <h2 style="margin:18px 0 8px">${own?"Mes annonces":"Ses annonces"}</h2>${ads.length?ads.map(a=>own?`<div class="mine">${card(a).replace('class="card"','class="card" style="display:flex"')}<button class="link" onclick="delAd('${esc(a.id)}')">Supprimer</button></div>`:card(a)).join(""):`<p class="empty">Aucune annonce pour l’instant.</p>`}`;
+ if(!own)m.querySelectorAll(".card").forEach(c=>c.style.marginTop="10px")}
+async function delAd(id){const {error}=await sb.from("ads").delete().eq("id",id);if(error)return toast("Suppression impossible : "+error.message);await loadAds();render();toast("Annonce supprimée")}
+async function logout(){await sb.auth.signOut();go("home")}
+sb.auth.onAuthStateChange((e,s)=>{ME=s?s.user:null;if(view==="me"||view==="pub")render()});
+(async()=>{const {data}=await sb.auth.getSession();ME=data.session?data.session.user:null;render();loadAds()})();
+</script></body></html>
