@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Envoyer (démo) – Bénin Market</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --vert: #357a4a;
+    --vert-fonce: #14302a;
+    --fond: #f6f8f6;
+    --bord: #dfe5e0;
+    --texte: #14302a;
+    --gris: #667a72;
+    --erreur: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 16px;
+    font-family: "DM Sans", system-ui, sans-serif;
+    background: var(--fond); color: var(--texte);
+  }
+  .carte {
+    max-width: 480px; margin: 0 auto; background: #fff;
+    border: 1px solid var(--bord); border-radius: 24px; padding: 24px;
+  }
+  a.retour { color: var(--vert); font-weight: 700; text-decoration: none; }
+  h1 { font-size: 28px; margin: 16px 0 8px; }
+  .note { color: var(--gris); margin: 0 0 20px; line-height: 1.4; }
+  .monid {
+    background: #eef5f0; border-radius: 14px; padding: 12px 16px;
+    margin-bottom: 20px; color: var(--gris);
+  }
+  .monid b { color: var(--vert-fonce); font-size: 22px; letter-spacing: 3px; }
+  label { display: block; font-weight: 700; margin: 16px 0 8px; }
+  input {
+    width: 100%; font: inherit; font-weight: 700; color: var(--texte);
+    padding: 16px; border: 1px solid var(--bord); border-radius: 16px;
+  }
+  input:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 3px solid #9fd0ae; outline-offset: 2px;
+  }
+  button {
+    width: 100%; margin-top: 24px; padding: 16px; font: inherit;
+    font-weight: 700; font-size: 18px; color: #fff; background: var(--vert);
+    border: 0; border-radius: 999px; cursor: pointer;
+  }
+  button:disabled { opacity: .6; cursor: wait; }
+  #message { margin-top: 16px; font-weight: 500; min-height: 24px; }
+  #message.ok { color: var(--vert); }
+  #message.ko { color: var(--erreur); }
+</style>
+</head>
+<body>
+<main class="carte">
+  <a class="retour" href="index.html">← Retour</a>
+  <h1>Envoyer (démo)</h1>
+  <p class="note">Mode démonstration : aucun argent réel n'est encaissé ni transféré.</p>
+
+  <div class="monid">Mon ID : <b id="monId">----</b></div>
+
+  <label for="montant">Montant FCFA</label>
+  <input id="montant" type="number" inputmode="numeric" min="1" placeholder="1000">
+
+  <label for="destinataire">ID du destinataire (4 chiffres)</label>
+  <input id="destinataire" type="text" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" placeholder="0000">
+
+  <button id="confirmer" type="button">Confirmer</button>
+  <div id="message" role="status" aria-live="polite"></div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+  // 1. Colle ici les mêmes valeurs que dans ton fichier index.html
+  const SUPABASE_URL = "COLLE_TON_URL_SUPABASE";
+  const SUPABASE_ANON_KEY = "COLLE_TA_CLE_ANON";
+
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const champMontant = document.getElementById("montant");
+  const champDest = document.getElementById("destinataire");
+  const bouton = document.getElementById("confirmer");
+  const message = document.getElementById("message");
+
+  function afficher(texte, ok) {
+    message.textContent = texte;
+    message.className = ok ? "ok" : "ko";
+  }
+
+  // Affiche l'ID à 4 chiffres de l'utilisateur connecté
+  (async function chargerMonId() {
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) {
+      afficher("Connecte-toi d'abord dans l'application.", false);
+      return;
+    }
+    const { data } = await db.from("profiles").select("short_id").eq("id", user.id).single();
+    if (data && data.short_id) document.getElementById("monId").textContent = data.short_id;
+  })();
+
+  bouton.addEventListener("click", async () => {
+    const montant = Number(champMontant.value);
+    const dest = champDest.value.trim();
+
+    if (!montant || montant <= 0) return afficher("Entre un montant supérieur à 0.", false);
+    if (!/^[0-9]{4}$/.test(dest)) return afficher("L'ID du destinataire doit avoir 4 chiffres.", false);
+
+    bouton.disabled = true;
+    afficher("Envoi en cours…", true);
+
+    const { data, error } = await db.rpc("send_money_by_short_id", {
+      to_short_id: dest,
+      amount: montant
+    });
+
+    bouton.disabled = false;
+
+    if (error) return afficher("Erreur : " + error.message, false);
+    if (data === "OK") {
+      afficher("Envoyé : " + montant + " FCFA à l'ID " + dest + ".", true);
+      champMontant.value = "";
+      champDest.value = "";
+    } else {
+      afficher(data, false);
+    }
+  });
+</script>
+</body>
+</html>
